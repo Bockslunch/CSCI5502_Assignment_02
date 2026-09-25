@@ -12,6 +12,7 @@ Entry point (command line):
     python src/profiler.py data/my_file.csv --out output/my_dataset --no-llm
 """
 
+# STANDARD-LIBRARY IMPORTS: COMMAND-LINE OPTIONS, JSON OUTPUT, IMPORT PATH, COUNTING, TIMESTAMPS AND FILE PATHS.
 import argparse
 import json
 import sys
@@ -19,11 +20,14 @@ from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
+# NUMPY AND PANDAS FOR THE DATA WORK.
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))  # allow `python src/profiler.py`
+sys.path.insert(0, str(Path(__file__).resolve().parent))  # ALLOW `python src/profiler.py`
 
+# THIS PROJECT'S OWN MODULES - ONE PER STAGE OF THE PIPELINE: ANALYSIS (QUALITY/STATS/RELATIONSHIPS), CONFIG
+# (THRESHOLDS), INFERENCE (TYPES/ROLES), LLM (FACTS/PROMPT/OLLAMA/VERIFICATION), PLOTS AND REPORT.
 from analysis import (categorical_stats, date_stats, group_comparison, numeric_stats,  # noqa: E402
                       pick_group_column, quality_checks, relationships)
 from config import ProfilerConfig  # noqa: E402
@@ -35,6 +39,8 @@ from report import write_report  # noqa: E402
 
 
 def _json_default(o):
+    # JSON CANNOT STORE NUMPY NUMBER TYPES OR TIMESTAMPS DIRECTLY, SO CONVERT THEM TO PLAIN PYTHON INT/FLOAT/BOOL/TEXT.
+    # NAN (NOT A NUMBER) BECOMES NULL.
     if isinstance(o, (np.integer,)):
         return int(o)
     if isinstance(o, (np.floating,)):
@@ -48,6 +54,7 @@ def _json_default(o):
 
 def _clean_nan(obj):
     """Replace float NaN/inf with None so the JSON file is valid."""
+    # WALK THROUGH NESTED DICTIONARIES AND LISTS AND REPLACE ANY NAN OR INFINITY WITH NONE (WRITTEN AS NULL IN JSON).
     if isinstance(obj, dict):
         return {k: _clean_nan(v) for k, v in obj.items()}
     if isinstance(obj, list):
@@ -59,8 +66,12 @@ def _clean_nan(obj):
 
 def load_csv(csv_path, cfg):
     """Read every column as text so type inference is ours, not pandas'. Nothing is dropped."""
+    # OPTIONAL EXTRA MISSING-VALUE CODES FROM THE CONFIG (EMPTY BY DEFAULT). PANDAS' STANDARD BLANKS ("", NA, N/A, NULL)
+    # ARE ALWAYS TREATED AS MISSING.
     na_values = list(cfg.missing_codes) if cfg.missing_codes else None
     last_err = None
+    # TRY COMMON TEXT ENCODINGS IN TURN. DTYPE=STR READS EVERY COLUMN AS TEXT SO `inference.py` DECIDES THE TYPES.
+    # IF ALL ENCODINGS FAIL, RAISE THE LAST ERROR.
     for enc in ("utf-8", "utf-8-sig", "latin-1"):
         try:
             return pd.read_csv(csv_path, dtype=str, na_values=na_values, keep_default_na=True,
@@ -74,21 +85,28 @@ def generate_profile(csv_path, output_dir, use_llm=True, config=None):
     """Profile one CSV file and write the full report package to output_dir.
 
     Returns the analysis summary dictionary."""
+    # SETUP: USE THE GIVEN CONFIG OR THE DEFAULTS, CREATE THE OUTPUT FOLDER, AND DELETE OLD PLOT FILES FROM AN EARLIER
+    # RUN SO THE PLOTS FOLDER ALWAYS MATCHES THE NEW REPORT.
     cfg = config or ProfilerConfig()
     csv_path, out = Path(csv_path), Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
     plots_dir = out / "plots"
-    if plots_dir.exists():  # remove plots from an earlier run so the folder matches this report
+    if plots_dir.exists():  # REMOVE PLOTS FROM AN EARLIER RUN SO THE FOLDER MATCHES THIS REPORT
         for old in plots_dir.glob("plot_*.png"):
             old.unlink()
+    # STEP 1 - LOAD THE CSV (ALL COLUMNS AS TEXT) AND PRINT ITS SIZE.
     print(f"[1/6] Loading {csv_path} ...")
     df_raw, encoding = load_csv(csv_path, cfg)
     n_rows, n_cols = df_raw.shape
     print(f"      {n_rows:,} rows x {n_cols} columns (encoding {encoding})")
 
+    # STEP 2 - DECIDE EACH COLUMN'S TECHNICAL TYPE AND PROBABLE ROLE. `infos` = DESCRIPTIONS, `typed` = CONVERTED VALUES.
     print("[2/6] Inferring column types and roles ...")
     infos, typed = infer_all(df_raw, cfg)
 
+    # STEP 3 - DATA-QUALITY CHECKS ON THE RAW DATA, THEN STATISTICS CHOSEN BY ROLE:
+    # NUMERIC MEASURES -> `numeric_stats()`, CATEGORICAL/BOOLEAN -> `categorical_stats()`, DATE-LIKE -> `date_stats()`.
+    # IDENTIFIERS, FREE TEXT AND MIXED COLUMNS GET QUALITY CHECKS ONLY.
     print("[3/6] Data quality checks and descriptive statistics ...")
     quality = quality_checks(df_raw, infos, cfg)
     num_stats, cat_stats, dt_stats = {}, {}, {}
@@ -101,13 +119,16 @@ def generate_profile(csv_path, output_dir, use_llm=True, config=None):
         elif role == "Date-like field":
             dt_stats[c] = date_stats(typed[c], n_rows, is_year=i["technical_type"] != "datetime")
 
+    # RELATIONSHIPS: THE CORRELATION ANALYSIS, AND A CATEGORICAL COLUMN TO COMPARE A NUMERIC MEASURE ACROSS.
     rel, corr = relationships(typed, infos, cfg)
     gcol = pick_group_column(infos, typed)
+    # THE MEASURE FOR THE GROUP COMPARISON: PREFER CONTINUOUS COLUMNS (MORE THAN 10 DISTINCT VALUES), MOST COMPLETE FIRST.
     measures = [c for c in (rel.get("numeric_columns_used") or list(num_stats)) if typed[c].nunique() > 10] \
         or rel.get("numeric_columns_used") or []
     measures = sorted(measures, key=lambda c: -typed[c].notna().sum())
     gcomp = group_comparison(typed, gcol, measures[0]) if gcol and measures else None
 
+    # RECORD EVERY ANALYSIS THAT COULD NOT RUN FOR THIS DATASET, WITH THE REASON (SHOWN IN THE REPORT).
     skipped = []
     if not num_stats:
         skipped.append("numeric statistics and outlier analysis (no numeric measure columns)")
@@ -120,6 +141,8 @@ def generate_profile(csv_path, output_dir, use_llm=True, config=None):
     if not gcomp:
         skipped.append("numeric-by-category comparison (needs a numeric measure and a categorical column with 2-15 levels)")
 
+    # THE VERIFIED SUMMARY: ONE DICTIONARY HOLDING EVERY PYTHON RESULT. IT IS SAVED AS `analysis_summary.json`,
+    # TURNED INTO THE LLM'S FACTS, AND USED TO WRITE THE REPORT.
     summary = {
         "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "config": {k: v for k, v in vars(cfg).items()},
@@ -144,11 +167,13 @@ def generate_profile(csv_path, output_dir, use_llm=True, config=None):
         ],
     }
 
+    # STEP 4 - PICK AND DRAW THE PLOTS THAT FIT THIS DATASET'S COLUMN ROLES; RECORD WHICH WERE SKIPPED.
     print("[4/6] Choosing and drawing visualizations ...")
     plots, plots_skipped = choose_and_draw(typed, infos, summary, corr, plots_dir, cfg)
     summary["plots"], summary["plots_skipped"] = plots, plots_skipped
     print(f"      {len(plots)} plots saved")
 
+    # STEP 5 - TURN THE SUMMARY INTO NUMBERED FACTS, BUILD THE PROMPT FROM THOSE FACTS ONLY, AND SAVE THE PROMPT.
     print("[5/6] Building verified fact list and (optionally) calling the LLM ...")
     facts = build_facts(summary)
     summary["llm_facts"] = facts
@@ -156,6 +181,8 @@ def generate_profile(csv_path, output_dir, use_llm=True, config=None):
     prompt = build_prompt(facts, columns, cfg.min_insights, cfg.max_insights)
     (out / "llm_prompt.txt").write_text(prompt, encoding="utf-8")
 
+    # LLM BRANCH: TURNED OFF -> NOTE IT; OLLAMA UNREACHABLE -> RECORD THE ERROR AND CONTINUE WITHOUT AI (GRACEFUL
+    # FAILURE); OTHERWISE SAVE THE RAW REPLY, PARSE THE INSIGHTS AND VERIFY EVERY ONE AGAINST THE PYTHON RESULTS.
     verification = []
     llm_info = {"model": cfg.llm_model, "host": cfg.ollama_host}
     if not use_llm:
@@ -176,14 +203,17 @@ def generate_profile(csv_path, output_dir, use_llm=True, config=None):
                             verified_count=sum(v["status"].startswith("VERIFIED") for v in verification))
             print(f"      model returned {len(parsed)} insights; {llm_info['verified_count']} passed verification")
 
-    # Final insight list: verified LLM insights (max 2 per category), plus Python templates for any
-    # required category the model missed, so the report always has 5-8 insights covering every type.
+    # FINAL INSIGHT LIST: VERIFIED LLM INSIGHTS (MAX 2 PER CATEGORY), PLUS PYTHON TEMPLATES FOR ANY
+    # REQUIRED CATEGORY THE MODEL MISSED, SO THE REPORT ALWAYS HAS 5-8 INSIGHTS COVERING EVERY TYPE.
     insights = assemble_insights(verification, template_insights(facts, cfg.min_insights), facts,
                                  cfg.min_insights, cfg.max_insights)
+    # STORE WHAT HAPPENED WITH THE LLM, THE FINAL INSIGHTS AND THE FULL CLAIM-VERIFICATION RESULTS IN THE SUMMARY.
     summary["llm"] = llm_info
     summary["insights"] = insights
     summary["claim_verification"] = verification
 
+    # STEP 6 - WRITE THE OUTPUT FILES: `column_profile.csv`, `analysis_summary.json` (NUMPY TYPES CONVERTED, NAN -> NULL),
+    # AND `report.md`.
     print("[6/6] Writing report, column profile and JSON summary ...")
     _write_column_profile(summary, out / "column_profile.csv")
     (out / "analysis_summary.json").write_text(
@@ -194,6 +224,8 @@ def generate_profile(csv_path, output_dir, use_llm=True, config=None):
 
 
 def _write_column_profile(summary, path):
+    # ONE ROW PER COLUMN: TYPE, ROLE AND MISSINGNESS FOR EVERY COLUMN, PLUS KEY NUMERIC STATISTICS OR THE MOST FREQUENT
+    # VALUES WHERE THEY APPLY. SAVED AS `column_profile.csv`.
     rows = []
     for c in summary["columns"]:
         name = c["column"]
@@ -214,6 +246,8 @@ def _write_column_profile(summary, path):
 
 
 def main(argv=None):
+    # COMMAND-LINE INTERFACE: THE CSV PATH IS REQUIRED; OUTPUT FOLDER, LLM ON/OFF, MODEL, OLLAMA ADDRESS, MISSINGNESS
+    # THRESHOLD, EXTRA MISSING CODES AND PLOT CAP ARE OPTIONAL. RUN `python src/profiler.py --help` TO SEE THEM.
     ap = argparse.ArgumentParser(description="Automated CSV profiler with verified LLM insights")
     ap.add_argument("csv_path", help="path to the CSV file to profile")
     ap.add_argument("--out", help="output folder (default: output/<csv file name>)")
@@ -227,11 +261,13 @@ def main(argv=None):
     ap.add_argument("--max-plots", type=int, default=ProfilerConfig.max_plots)
     args = ap.parse_args(argv)
 
+    # TURN THE OPTIONS INTO A CONFIG, DEFAULT THE OUTPUT FOLDER TO OUTPUT/<CSV NAME>, AND RUN THE PIPELINE.
     cfg = ProfilerConfig(high_missing_threshold=args.missing_threshold, llm_model=args.model,
                          ollama_host=args.host, missing_codes=args.missing_codes, max_plots=args.max_plots)
     out = args.out or str(Path(__file__).resolve().parent.parent / "output" / Path(args.csv_path).stem)
     generate_profile(args.csv_path, out, use_llm=not args.no_llm, config=cfg)
 
 
+# RUN `main()` ONLY WHEN THIS FILE IS EXECUTED DIRECTLY, NOT WHEN ANOTHER SCRIPT IMPORTS `generate_profile`.
 if __name__ == "__main__":
     main()

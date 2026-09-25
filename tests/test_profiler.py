@@ -5,6 +5,7 @@ assignment names (no numeric / no categorical columns, empty columns), and that
 the LLM verifier rejects invented numbers and causal claims.
 """
 
+# IMPORTS: STANDARD LIBRARY, NUMPY/PANDAS FOR TEST DATA, AND PYTEST (THE TEST RUNNER).
 import json
 import sys
 from pathlib import Path
@@ -13,6 +14,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
+# LET THE TESTS IMPORT THE MODULES IN `src/`, THEN IMPORT THE FUNCTIONS UNDER TEST.
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from analysis import numeric_stats  # noqa: E402
@@ -21,20 +23,27 @@ from inference import infer_column  # noqa: E402
 from llm import build_facts, parse_insights, template_insights, verify_insights  # noqa: E402
 from profiler import generate_profile  # noqa: E402
 
+# ONE DEFAULT CONFIG SHARED BY THE TESTS.
 CFG = ProfilerConfig()
 
 
+# TEST 1: THE NUMERIC STATISTICS MATCH VALUES WORKED OUT BY HAND FOR A TINY COLUMN [1, 2, 3, 4, 100, MISSING].
 def test_numeric_stats_match_hand_calculation():
+    # 5 VALID VALUES + 1 MISSING; MEDIAN 3; MEAN (1+2+3+4+100)/5 = 22.
     s = pd.Series([1, 2, 3, 4, 100, np.nan])
     st = numeric_stats(s, n_rows=6, cfg=CFG)
     assert st["valid_count"] == 5 and st["missing_count"] == 1
     assert st["median"] == 3 and st["mean"] == pytest.approx(22.0)
-    # pandas linear quartiles: Q1 = 2, Q3 = 4, IQR = 2, upper fence = 7 -> 100 is the only outlier
+    # PANDAS LINEAR QUARTILES: Q1 = 2, Q3 = 4, IQR = 2, UPPER FENCE = 7 -> 100 IS THE ONLY OUTLIER
     assert (st["q1"], st["q3"], st["iqr"]) == (2, 4, 2)
+    # 100 IS ABOVE THE UPPER FENCE OF 7, SO IT IS THE ONLY OUTLIER; STD MUST EQUAL NUMPY'S SAMPLE STD (`ddof=1`).
     assert st["outlier_count"] == 1 and st["outliers_high"] == 1
     assert st["std"] == pytest.approx(np.std([1, 2, 3, 4, 100], ddof=1))
 
 
+# TEST 2: ROLE INFERENCE - EACH (VALUES, EXPECTED ROLE) PAIR BELOW IS RUN AS ITS OWN TEST CASE:
+# NUMBERS -> NUMERIC, Y/N -> BOOLEAN, ISO DATES -> DATE-LIKE, REPEATED LABELS -> CATEGORICAL,
+# ALL-DISTINCT CODES -> IDENTIFIER, HALF NUMBERS / HALF TEXT -> MIXED.
 @pytest.mark.parametrize("values,role", [
     (["1", "2", "3.5", "4"] * 10, "Numeric measure"),
     (["Y", "N"] * 20, "Boolean field"),
@@ -47,11 +56,14 @@ def test_role_inference(values, role):
     assert infer_column("col", pd.Series(values, dtype="object"), CFG)["role"] == role
 
 
+# TEST 3: A NUMERIC COLUMN NAMED "ZIP CODE" MUST BE AN IDENTIFIER, NOT A NUMERIC MEASURE.
 def test_numeric_code_names_are_not_measures():
     info = infer_column("ZIP Code", pd.Series(["80301", "80302", "80303"] * 10), CFG)
     assert info["role"] == "Identifier-like field"
 
 
+# HELPER: SAVE A SMALL DATAFRAME AS A CSV IN A TEMPORARY FOLDER, RUN THE WHOLE PIPELINE WITHOUT THE LLM, AND CHECK
+# THAT ALL FIVE REQUIRED OUTPUT FILES EXIST AND THAT THE JSON FILE IS VALID.
 def _run(tmp_path, df, name):
     csv = tmp_path / f"{name}.csv"
     df.to_csv(csv, index=False)
@@ -59,10 +71,11 @@ def _run(tmp_path, df, name):
     summary = generate_profile(csv, out, use_llm=False)
     for f in ("report.md", "column_profile.csv", "analysis_summary.json", "llm_prompt.txt", "llm_response.txt"):
         assert (out / f).exists(), f
-    json.loads((out / "analysis_summary.json").read_text(encoding="utf-8"))  # valid JSON
+    json.loads((out / "analysis_summary.json").read_text(encoding="utf-8"))  # VALID JSON
     return summary, out
 
 
+# TEST 4: A CSV WITH ONLY TEXT CATEGORIES MUST STILL RUN AND SAY THAT THE NUMERIC ANALYSIS WAS SKIPPED.
 def test_no_numeric_columns(tmp_path):
     df = pd.DataFrame({"a": list("xyzxyz") * 5, "b": list("ppqqrr") * 5})
     summary, out = _run(tmp_path, df, "cats_only")
@@ -70,6 +83,8 @@ def test_no_numeric_columns(tmp_path):
     assert "Skipped" in (out / "report.md").read_text(encoding="utf-8")
 
 
+# TEST 5: A CSV WITH ONLY NUMBERS AND ONE COMPLETELY EMPTY COLUMN: THE EMPTY COLUMN IS FLAGGED, THE CATEGORICAL
+# ANALYSIS IS REPORTED AS SKIPPED, AND AT LEAST 3 PLOTS ARE STILL MADE.
 def test_no_categorical_columns_and_empty_column(tmp_path):
     rng = np.random.default_rng(1)
     df = pd.DataFrame({"x": rng.normal(size=50), "y": rng.normal(size=50), "empty": [None] * 50})
@@ -79,6 +94,8 @@ def test_no_categorical_columns_and_empty_column(tmp_path):
     assert len(summary["plots"]) >= 3
 
 
+# TEST 6: GRACEFUL FAILURE - POINT THE PROGRAM AT A PORT WHERE NO OLLAMA IS RUNNING. THE RUN MUST FINISH, MARK THE LLM
+# AS UNAVAILABLE, SAY SO IN THE REPORT, AND STILL PRODUCE AT LEAST 5 (PYTHON TEMPLATE) INSIGHTS.
 def test_llm_unavailable_is_graceful(tmp_path):
     df = pd.DataFrame({"x": range(30), "g": list("ab") * 15})
     csv = tmp_path / "t.csv"
@@ -90,6 +107,7 @@ def test_llm_unavailable_is_graceful(tmp_path):
     assert len(summary["insights"]) >= 5
 
 
+# TEST 7: THE VERIFIER ACCEPTS A CORRECT CLAIM, REJECTS AN INVENTED NUMBER (900), AND REJECTS CAUSAL WORDING ("CAUSE").
 def test_verifier_rejects_invented_numbers_and_causation():
     facts = [{"id": "F1", "category": "data quality", "columns": ["score"],
               "text": "Column `score` is missing 842 of 5,210 values (16.16%), above the 30% threshold."}]
@@ -102,8 +120,10 @@ def test_verifier_rejects_invented_numbers_and_causation():
     assert [r["status"] for r in res] == ["VERIFIED", "REJECTED", "REJECTED"]
 
 
+# TEST 8: MIRRORS REAL `qwen2.5:3b` MISTAKES - NO FACT IDS (PYTHON SHOULD MATCH THEM), "STRONG" FOR R = -0.387,
+# "PERFECT" FOR R = 0.999, AND AN R VALUE TAKEN FROM A FACT ABOUT DIFFERENT COLUMNS.
 def test_verifier_auto_matches_missing_fact_ids_and_rejects_overstated_strength():
-    # Mirrors real qwen2.5:3b output: no fact_ids, and "strong"/"perfect" for weak / 0.999 correlations
+    # MIRRORS REAL QWEN2.5:3B OUTPUT: NO FACT_IDS, AND "STRONG"/"PERFECT" FOR WEAK / 0.999 CORRELATIONS
     facts = [
         {"id": "F1", "category": "data quality", "columns": ["a"], "text": "Column `a` is missing 5 of 50 values (10%)."},
         {"id": "F2", "category": "relationship", "columns": ["a", "b"],
@@ -119,11 +139,13 @@ def test_verifier_auto_matches_missing_fact_ids_and_rejects_overstated_strength(
     ]})
     res = verify_insights(parse_insights(response), facts, ["a", "b", "c", "d"])
     assert res[0]["status"].startswith("VERIFIED") and res[0]["auto_fact_ids"] == ["F1"]
-    assert res[1]["status"] == "REJECTED"   # 'strong' but |r| = 0.387
-    assert res[2]["status"] == "REJECTED"   # 'perfect' but r = 0.999
-    assert res[3]["status"] == "REJECTED"   # -0.39 belongs to a fact about other columns
+    assert res[1]["status"] == "REJECTED"   # 'STRONG' BUT |R| = 0.387
+    assert res[2]["status"] == "REJECTED"   # 'PERFECT' BUT R = 0.999
+    assert res[3]["status"] == "REJECTED"   # -0.39 BELONGS TO A FACT ABOUT OTHER COLUMNS
 
 
+# TEST 9: IF THE MODEL RETURNS SIX DATA-QUALITY INSIGHTS, ONLY TWO ARE KEPT AND PYTHON TEMPLATES FILL EVERY OTHER
+# REQUIRED CATEGORY, WITH 5-8 INSIGHTS IN TOTAL.
 def test_assembly_covers_required_categories_and_caps_per_category():
     from llm import assemble_insights
     facts = [{"id": f"F{i}", "category": c, "columns": [], "text": t} for i, (c, t) in enumerate([
@@ -138,8 +160,10 @@ def test_assembly_covers_required_categories_and_caps_per_category():
         assert c in cats
 
 
+# TEST 10: A NUMBER MUST MATCH THE STATISTIC IT IS ATTACHED TO: "MISSING 196,235" (REALLY THE ZERO COUNT) AND "VIN VALUES
+# ARE MISSING" (VIN HAS 0 MISSING) ARE REJECTED; A CORRECT MEAN IS ACCEPTED.
 def test_statistic_words_must_match_the_named_columns_value():
-    # Real qwen2.5:3b mistakes: zeros reported as "missing", total rows reported as missing, false premise
+    # REAL QWEN2.5:3B MISTAKES: ZEROS REPORTED AS "MISSING", TOTAL ROWS REPORTED AS MISSING, FALSE PREMISE
     summary = {"columns": [{"column": "range", "missing": 26, "missing_pct": 0.01, "unique": 117},
                            {"column": "vin", "missing": 0, "missing_pct": 0.0, "unique": 18376}],
                "numeric_statistics": {"range": {"mean": 36.66, "outlier_count": 43197, "outlier_pct": 14.41}},
@@ -156,6 +180,7 @@ def test_statistic_words_must_match_the_named_columns_value():
     assert [r["status"][:8] for r in res] == ["REJECTED", "REJECTED", "VERIFIED"]
 
 
+# TEST 11: UNFINISHED TEXT ("...", "<COLUMN>") IS REJECTED; A COMPLETE QUESTION WITH THE RIGHT NUMBER IS ACCEPTED.
 def test_placeholder_text_is_rejected():
     facts = [{"id": "F1", "category": "data quality", "columns": ["city"], "text": "Column `city` is missing 11 of 100 values (11%)."}]
     summary = {"columns": [{"column": "city", "missing": 11, "missing_pct": 11.0, "unique": 5}],
@@ -168,6 +193,8 @@ def test_placeholder_text_is_rejected():
     assert [r["status"][:8] for r in res] == ["REJECTED", "REJECTED", "VERIFIED"]
 
 
+# TEST 12: "ZEROS (65.48%) ... MISSING" IS ACCEPTED (THE % BELONGS TO "ZEROS"), A CATEGORY NAME CONTAINING "DUE TO" IS NOT
+# TREATED AS A CAUSAL CLAIM, AND "MAJORITY ... (8.07%)" IS REJECTED.
 def test_numbers_bind_to_their_own_statistic_and_quoted_values_are_not_causal():
     summary = {"columns": [{"column": "range", "missing": 26, "missing_pct": 0.01, "unique": 117},
                            {"column": "elig", "missing": 0, "missing_pct": 0.0, "unique": 3}],
