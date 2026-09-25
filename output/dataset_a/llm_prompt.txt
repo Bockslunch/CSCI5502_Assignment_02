@@ -1,0 +1,71 @@
+You are helping explain an automated data profile. All statistics below were computed by Python and are verified.
+
+RULES
+- Use ONLY the facts listed below. Do not calculate new numbers (no new sums, differences, ratios or percentages).
+- Copy every number exactly as it appears in the facts you cite.
+- EVERY insight MUST include "fact_ids": the IDs (e.g. "F12") of the facts it uses.
+- Refer to columns by their exact names in backticks, e.g. `column_name`.
+- Do not guess what a column means, its units, or why a pattern exists. If meaning is unclear, say it is undocumented.
+- Correlation is not causation. Never use words like "causes", "leads to", "drives", "due to", "because of".
+- Describe correlation strength honestly: |r| >= 0.7 strong, 0.4-0.7 moderate, below 0.4 weak. Never say "perfect" unless r is exactly 1.000.
+- Write between 5 and 8 insights, AT MOST 2 per category.
+- Include at least one insight in EACH of these categories: "data quality", "distribution", "categorical", "relationship", "limitation", "follow-up question".
+  A "follow-up question" insight is a question worth investigating next.
+- Each insight is one or two sentences and should add interpretation, not just repeat a fact.
+
+Return ONLY valid JSON in exactly this shape:
+{"insights": [
+  {"category": "<one of the categories above>", "text": "<one or two complete sentences using exact numbers copied from the cited facts>", "fact_ids": ["<fact id>", "<fact id>"]}
+]}
+Do not copy the angle-bracket placeholders; replace them with real content. Never write "..." in an insight.
+
+VERIFIED FACTS
+F1 [overview] The file chicago_energy_benchmarking.csv has 28,329 rows and 30 columns.
+F2 [overview] Inferred column roles (count of columns): Numeric measure: 19, Categorical attribute: 6, Identifier-like field: 3, Date-like field: 1, Boolean field: 1.
+F3 [data quality] There are 0 fully duplicated rows (0.0% of rows).
+F4 [data quality] 197,703 of all cells are missing (23.26%); 28,329 rows (100.0%) have at least one missing value.
+F5 [data quality] Column `All Other Fuel Use (kBtu)` is missing 28,247 of 28,329 values (99.71%), above the 30% high-missingness threshold.
+F6 [data quality] Column `Water Use (kGal)` is missing 24,280 of 28,329 values (85.71%), above the 30% high-missingness threshold.
+F7 [data quality] Column `District Steam Use (kBtu)` is missing 22,569 of 28,329 values (79.67%), above the 30% high-missingness threshold.
+F8 [data quality] Column `District Chilled Water Use (kBtu)` is missing 22,407 of 28,329 values (79.1%), above the 30% high-missingness threshold.
+F9 [data quality] Column `Exempt From Chicago Energy Rating` is missing 10,363 of 28,329 values (36.58%), above the 30% high-missingness threshold.
+F10 [data quality] Column `Chicago Energy Rating` is missing 8923 of 28,329 values (31.5%), above the 30% high-missingness threshold.
+F11 [data quality] Column `ZIP Code` has 81 values (0.3% of non-missing) that do not match its inferred type (integer).
+F12 [data quality] Column `Property Name` contains 10 placeholder-like values (-) that may mean 'missing'.
+F13 [data quality] Column `Primary Property Type` contains 6 placeholder-like values (not available) that may mean 'missing'.
+F14 [data quality] Identifier-like or very high-cardinality columns (excluded from correlations): `ID`, `Property Name`, `Address`, `ZIP Code`, `Community Area`, `Primary Property Type`.
+F15 [limitation] Heuristic sensitive-field warnings were raised for: `Property Name`, `Address`, `ZIP Code`, `Latitude`, `Longitude`, `Location`. This is a name/pattern heuristic, not a privacy review.
+F16 [distribution] `Gross Floor Area - Buildings (sq ft)`: n = 26,104, missing 7.85%, min 2804, Q1 74,890, median 123,500, mean 254,897, Q3 269,400, max 9,245,333, std 415,487, skewness 7.82.
+F17 [distribution] `Gross Floor Area - Buildings (sq ft)` has 2584 potential outliers by the 1.5×IQR rule (9.9% of valid values; 2584 above 561,165, 0 below -216,875).
+F18 [distribution] `# of Buildings`: n = 23,875, missing 15.72%, min 0, Q1 1, median 1, mean 1.428, Q3 1, max 236, std 4.968, skewness 37.2.
+F19 [distribution] `# of Buildings` has 2082 potential outliers by the 1.5×IQR rule (8.72% of valid values; 2047 above 1, 35 below 1).
+F20 [distribution] `Year Built`: n = 23,297, missing 17.76%, min 1692, Q1 1928, median 1970, mean 1964.3, Q3 2000, max 2023, std 37.38, skewness -0.33.
+F21 [distribution] `Year Built` has 3 potential outliers by the 1.5×IQR rule (0.01% of valid values; 0 above 2108, 3 below 1820).
+F22 [distribution] `Electricity Use (kBtu)`: n = 23,013, missing 18.77%, min 0, Q1 1,839,088, median 3,987,424, mean 10,935,099, Q3 9,632,110, max 1,114,458,041, std 29,110,158, skewness 14.4.
+F23 [distribution] `Electricity Use (kBtu)` has 2372 potential outliers by the 1.5×IQR rule (10.31% of valid values; 2372 above 21,321,642, 0 below -9,850,444).
+F24 [distribution] `Site EUI (kBtu/sq ft)`: n = 22,870, missing 19.27%, min 0.1, Q1 60.5, median 78.4, mean 96.7, Q3 100.9, max 15,634, std 222, skewness 44.8.
+F25 [distribution] `Site EUI (kBtu/sq ft)` has 1679 potential outliers by the 1.5×IQR rule (7.34% of valid values; 1679 above 161.5, 0 below -0.1).
+F26 [distribution] `Source EUI (kBtu/sq ft)`: n = 22,011, missing 22.3%, min 0.2, Q1 106.6, median 136.8, mean 171.3, Q3 181.5, max 16,485, std 260.4, skewness 34.9.
+F27 [distribution] `Source EUI (kBtu/sq ft)` has 1746 potential outliers by the 1.5×IQR rule (7.93% of valid values; 1746 above 293.9, 0 below -5.75).
+F28 [distribution] `Weather Normalized Site EUI (kBtu/sq ft)`: n = 21,760, missing 23.19%, min 0.1, Q1 63, median 82, mean 98.85, Q3 104.8, max 14,393, std 194.8, skewness 44.3.
+F29 [distribution] `Weather Normalized Site EUI (kBtu/sq ft)` has 1572 potential outliers by the 1.5×IQR rule (7.22% of valid values; 1568 above 167.5, 4 below 0.3).
+F30 [distribution] `Total GHG Emissions (Metric Tons CO2e)`: n = 21,714, missing 23.35%, min 0, Q1 546.5, median 1026.2, mean 2492.6, Q3 2292.5, max 185,162, std 5995.2, skewness 12.1.
+F31 [distribution] `Total GHG Emissions (Metric Tons CO2e)` has 2240 potential outliers by the 1.5×IQR rule (10.32% of valid values; 2240 above 4911.5, 0 below -2072.4).
+F32 [categorical] `Reporting Status` has 5 distinct values; most frequent: Submitted = 17,572 (62.03%); Submitted Data = 5621 (19.84%); Not Submitted = 3867 (13.65%); Exempt = 957 (3.38%).
+F33 [categorical] `Community Area` has 157 distinct values; most frequent: NEAR NORTH SIDE = 3746 (13.37%); LOOP = 2670 (9.53%); NEAR WEST SIDE = 1821 (6.5%); LAKE VIEW = 1274 (4.55%).
+F34 [categorical] `Primary Property Type` has 62 distinct values; most frequent: Multifamily Housing = 11,278 (46.85%); K-12 School = 3503 (14.55%); Office = 3214 (13.35%); College/University = 796 (3.31%).
+F35 [categorical] `Address` has 7725 distinct values; most frequent: 7601 S Cicero Ave = 13 (0.05%); 1100 East 57th Street = 11 (0.04%); 225 E Chicago Ave = 10 (0.04%); 1744 W Pryor Ave = 10 (0.04%).
+F36 [categorical] `Location` has 9604 distinct values; most frequent: (41.9398511, -87.65844752) = 389 (1.37%); (41.9037528, -87.63558845) = 352 (1.24%); (41.80224043, -87.60332678) = 333 (1.18%); (41.92201051, -87.65461957) = 284 (1.0%).
+F37 [categorical] `Property Name` has 7043 distinct values; most frequent: Sullivan Center = 14 (0.06%); West Side Realty Corporation = 12 (0.05%); Inland Steel Building = 10 (0.04%); Congress Center = 10 (0.04%).
+F38 [distribution] `Data Year` ranges from 2014 to 2023 (28,329 non-missing values, 0.0% missing).
+F39 [relationship] `Weather Normalized Site EUI (kBtu/sq ft)` and `GHG Intensity (kg CO2e/sq ft)`: Pearson r = 0.944, Spearman rho = 0.745, based on 21,457 rows with both values.
+F40 [relationship] `ENERGY STAR Score` and `Chicago Energy Rating`: Pearson r = 0.918, Spearman rho = 0.919, based on 13,538 rows with both values.
+F41 [relationship] 10 pair(s) of numeric columns have |Pearson r| of 0.95 or more, e.g. `Site EUI (kBtu/sq ft)` and `Weather Normalized Site EUI (kBtu/sq ft)` (r = 0.999); such columns may be derived from each other.
+F42 [relationship] `Site EUI (kBtu/sq ft)` and `Weather Normalized Site EUI (kBtu/sq ft)`: Pearson r = 0.999, Spearman rho = 0.994, based on 21,759 rows with both values.
+F43 [relationship] `Source EUI (kBtu/sq ft)` and `Weather Normalized Source EUI (kBtu/sq ft)`: Pearson r = 0.999, Spearman rho = 0.996, based on 20,399 rows with both values.
+F44 [relationship] Strongest negative pair: `Weather Normalized Source EUI (kBtu/sq ft)` and `ENERGY STAR Score`, Pearson r = -0.387 (17,585 rows).
+F45 [categorical] Median `Gross Floor Area - Buildings (sq ft)` by `Reporting Status`: Submitted: median 131,964 (n = 17,370); Submitted Data: median 131,782 (n = 5621); Exempt: median 96,268 (n = 875); Not Submitted: median 83,166 (n = 2238).
+F46 [limitation] Column meanings, units and valid ranges are not documented in the CSV; the profiler infers structure only, not meaning.
+
+VALID COLUMN NAMES
+Data Year, ID, Property Name, Reporting Status, Address, ZIP Code, Chicago Energy Rating, Exempt From Chicago Energy Rating, Community Area, Primary Property Type, Gross Floor Area - Buildings (sq ft), Year Built, # of Buildings, Water Use (kGal), ENERGY STAR Score, Electricity Use (kBtu), Natural Gas Use (kBtu), District Steam Use (kBtu), District Chilled Water Use (kBtu), All Other Fuel Use (kBtu), Site EUI (kBtu/sq ft), Source EUI (kBtu/sq ft), Weather Normalized Site EUI (kBtu/sq ft), Weather Normalized Source EUI (kBtu/sq ft), Total GHG Emissions (Metric Tons CO2e), GHG Intensity (kg CO2e/sq ft), Latitude, Longitude, Location, Row_ID

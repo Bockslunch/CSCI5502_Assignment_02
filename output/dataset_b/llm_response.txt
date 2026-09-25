@@ -1,0 +1,34 @@
+{
+  "insights": [
+    {
+      "category": "data quality",
+      "text": "There are no fully duplicated rows, indicating data integrity (F3).",
+      "fact_ids": ["F3"]
+    },
+    {
+      "category": "distribution",
+      "text": "The `Electric Range` column has a high proportion of zeros (65.48%), which could indicate missing or 'not recorded' data (F9).",
+      "fact_ids": ["F9"]
+    },
+    {
+      "category": "categorical",
+      "text": "The `Make` column is dominated by a few manufacturers, with Tesla being the most frequent (41.03%) (F10).",
+      "fact_ids": ["F10"]
+    },
+    {
+      "category": "limitation",
+      "text": "The column meanings and units are not documented, making it difficult to interpret the data (F19).",
+      "fact_ids": ["F19"]
+    },
+    {
+      "category": "follow-up question",
+      "text": "It would be useful to investigate why `Electric Range` has so many zeros and what they represent (F9).",
+      "fact_ids": ["F9"]
+    },
+    {
+      "category": "categorical",
+      "text": "The `Clean Alternative Fuel Vehicle (CAFV) Eligibility` column shows that the majority of vehicles are not eligible due to low battery range (8.07%) (F12).",
+      "fact_ids": ["F12"]
+    }
+  ]
+}

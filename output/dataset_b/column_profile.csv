@@ -1,0 +1,17 @@
+column,technical_type,probable_role,non_missing,missing,missing_pct,unique,unique_ratio,non_conforming_values,notes,most_frequent,most_frequent_count,min,max,mean,median,mode,std,q1,q3,iqr,outlier_count,outlier_pct,zero_pct
+VIN (1-10),string,Categorical attribute,299705,0,0.0,18376,0.0613,0,name suggests a code; treated as categorical because values repeat,7SAYGDEE7P,1228.0,,,,,,,,,,,,
+County,string,Categorical attribute,299694,11,0.0,255,0.0009,0,,King,144257.0,,,,,,,,,,,,
+City,string,Categorical attribute,299694,11,0.0,941,0.0031,0,,Seattle,45469.0,,,,,,,,,,,,
+State,string,Categorical attribute,299705,0,0.0,50,0.0002,0,,WA,298916.0,,,,,,,,,,,,
+Postal Code,integer,Identifier-like field,299694,11,0.0,1201,0.004,0,"numeric code: column name suggests an identifier/code, so it is not treated as a measurement",,,,,,,,,,,,,,
+Model Year,integer,Date-like field,299705,0,0.0,23,0.0001,0,integer years (name contains a year word and values are 1800-2100),,,,,,,,,,,,,,
+Make,string,Categorical attribute,299705,0,0.0,51,0.0002,0,,TESLA,122981.0,,,,,,,,,,,,
+Model,string,Categorical attribute,299705,0,0.0,202,0.0007,0,,MODEL Y,66545.0,,,,,,,,,,,,
+Electric Vehicle Type,string,Categorical attribute,299705,0,0.0,2,0.0,0,,Battery Electric Vehicle (BEV),241724.0,,,,,,,,,,,,
+Clean Alternative Fuel Vehicle (CAFV) Eligibility,string,Categorical attribute,299705,0,0.0,3,0.0,0,,Eligibility unknown as battery range has not been researched,196235.0,,,,,,,,,,,,
+Electric Range,integer,Numeric measure,299679,26,0.01,117,0.0004,0,,,,0.0,337.0,36.66331307832714,0.0,0.0,76.03442251419314,0.0,32.0,32.0,43197.0,14.41,65.48
+Legislative District,integer,Identifier-like field,298915,790,0.26,49,0.0002,0,"numeric code: column name suggests an identifier/code, so it is not treated as a measurement",,,,,,,,,,,,,,
+DOL Vehicle ID,integer,Identifier-like field,299705,0,0.0,299705,1.0,0,"numeric code: column name suggests an identifier/code, so it is not treated as a measurement",,,,,,,,,,,,,,
+Vehicle Location,string,Categorical attribute,299685,20,0.01,1199,0.004,0,,POINT (-122.13158 47.67858),7155.0,,,,,,,,,,,,
+Electric Utility,string,Categorical attribute,299694,11,0.0,77,0.0003,0,,PUGET SOUND ENERGY INC||CITY OF TACOMA - (WA),103988.0,,,,,,,,,,,,
+2020 GEOID,integer,Identifier-like field,299694,11,0.0,2466,0.0082,0,"numeric code: column name suggests an identifier/code, so it is not treated as a measurement",,,,,,,,,,,,,,

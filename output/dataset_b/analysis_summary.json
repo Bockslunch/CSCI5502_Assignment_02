@@ -1,0 +1,1576 @@
+{
+  "generated_at": "2026-09-23 16:10:47",
+  "config": {
+    "high_missing_threshold": 0.3,
+    "id_unique_ratio": 0.95,
+    "high_cardinality_count": 50,
+    "zero_share_warning": 0.3,
+    "type_parse_threshold": 0.95,
+    "mixed_type_floor": 0.5,
+    "free_text_avg_len": 50,
+    "top_k": 10,
+    "max_plots": 8,
+    "max_corr_columns": 15,
+    "scatter_sample": 5000,
+    "random_seed": 42,
+    "missing_codes": [],
+    "llm_model": "qwen2.5:7b",
+    "ollama_host": "http://localhost:11434",
+    "llm_timeout_seconds": 600,
+    "llm_temperature": 0.2,
+    "min_insights": 5,
+    "max_insights": 8
+  },
+  "overview": {
+    "filename": "wa_electric_vehicle_population.csv",
+    "rows": 299705,
+    "columns": 16,
+    "encoding": "utf-8",
+    "column_names": [
+      "VIN (1-10)",
+      "County",
+      "City",
+      "State",
+      "Postal Code",
+      "Model Year",
+      "Make",
+      "Model",
+      "Electric Vehicle Type",
+      "Clean Alternative Fuel Vehicle (CAFV) Eligibility",
+      "Electric Range",
+      "Legislative District",
+      "DOL Vehicle ID",
+      "Vehicle Location",
+      "Electric Utility",
+      "2020 GEOID"
+    ],
+    "role_counts": {
+      "Categorical attribute": 10,
+      "Identifier-like field": 4,
+      "Date-like field": 1,
+      "Numeric measure": 1
+    }
+  },
+  "columns": [
+    {
+      "column": "VIN (1-10)",
+      "non_missing": 299705,
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 18376,
+      "unique_ratio": 0.0613,
+      "notes": [
+        "name suggests a code; treated as categorical because values repeat"
+      ],
+      "non_conforming_count": 0,
+      "non_conforming_examples": [],
+      "exclude_from_correlation": false,
+      "technical_type": "string",
+      "role": "Categorical attribute"
+    },
+    {
+      "column": "County",
+      "non_missing": 299694,
+      "missing": 11,
+      "missing_pct": 0.0,
+      "unique": 255,
+      "unique_ratio": 0.0009,
+      "notes": [],
+      "non_conforming_count": 0,
+      "non_conforming_examples": [],
+      "exclude_from_correlation": false,
+      "technical_type": "string",
+      "role": "Categorical attribute"
+    },
+    {
+      "column": "City",
+      "non_missing": 299694,
+      "missing": 11,
+      "missing_pct": 0.0,
+      "unique": 941,
+      "unique_ratio": 0.0031,
+      "notes": [],
+      "non_conforming_count": 0,
+      "non_conforming_examples": [],
+      "exclude_from_correlation": false,
+      "technical_type": "string",
+      "role": "Categorical attribute"
+    },
+    {
+      "column": "State",
+      "non_missing": 299705,
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 50,
+      "unique_ratio": 0.0002,
+      "notes": [],
+      "non_conforming_count": 0,
+      "non_conforming_examples": [],
+      "exclude_from_correlation": false,
+      "technical_type": "string",
+      "role": "Categorical attribute"
+    },
+    {
+      "column": "Postal Code",
+      "non_missing": 299694,
+      "missing": 11,
+      "missing_pct": 0.0,
+      "unique": 1201,
+      "unique_ratio": 0.004,
+      "notes": [
+        "numeric code: column name suggests an identifier/code, so it is not treated as a measurement"
+      ],
+      "non_conforming_count": 0,
+      "non_conforming_examples": [],
+      "exclude_from_correlation": false,
+      "technical_type": "integer",
+      "role": "Identifier-like field"
+    },
+    {
+      "column": "Model Year",
+      "non_missing": 299705,
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 23,
+      "unique_ratio": 0.0001,
+      "notes": [
+        "integer years (name contains a year word and values are 1800-2100)"
+      ],
+      "non_conforming_count": 0,
+      "non_conforming_examples": [],
+      "exclude_from_correlation": false,
+      "technical_type": "integer",
+      "role": "Date-like field"
+    },
+    {
+      "column": "Make",
+      "non_missing": 299705,
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 51,
+      "unique_ratio": 0.0002,
+      "notes": [],
+      "non_conforming_count": 0,
+      "non_conforming_examples": [],
+      "exclude_from_correlation": false,
+      "technical_type": "string",
+      "role": "Categorical attribute"
+    },
+    {
+      "column": "Model",
+      "non_missing": 299705,
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 202,
+      "unique_ratio": 0.0007,
+      "notes": [],
+      "non_conforming_count": 0,
+      "non_conforming_examples": [],
+      "exclude_from_correlation": false,
+      "technical_type": "string",
+      "role": "Categorical attribute"
+    },
+    {
+      "column": "Electric Vehicle Type",
+      "non_missing": 299705,
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 2,
+      "unique_ratio": 0.0,
+      "notes": [],
+      "non_conforming_count": 0,
+      "non_conforming_examples": [],
+      "exclude_from_correlation": false,
+      "technical_type": "string",
+      "role": "Categorical attribute"
+    },
+    {
+      "column": "Clean Alternative Fuel Vehicle (CAFV) Eligibility",
+      "non_missing": 299705,
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 3,
+      "unique_ratio": 0.0,
+      "notes": [],
+      "non_conforming_count": 0,
+      "non_conforming_examples": [],
+      "exclude_from_correlation": false,
+      "technical_type": "string",
+      "role": "Categorical attribute"
+    },
+    {
+      "column": "Electric Range",
+      "non_missing": 299679,
+      "missing": 26,
+      "missing_pct": 0.01,
+      "unique": 117,
+      "unique_ratio": 0.0004,
+      "notes": [],
+      "non_conforming_count": 0,
+      "non_conforming_examples": [],
+      "exclude_from_correlation": false,
+      "technical_type": "integer",
+      "role": "Numeric measure"
+    },
+    {
+      "column": "Legislative District",
+      "non_missing": 298915,
+      "missing": 790,
+      "missing_pct": 0.26,
+      "unique": 49,
+      "unique_ratio": 0.0002,
+      "notes": [
+        "numeric code: column name suggests an identifier/code, so it is not treated as a measurement"
+      ],
+      "non_conforming_count": 0,
+      "non_conforming_examples": [],
+      "exclude_from_correlation": false,
+      "technical_type": "integer",
+      "role": "Identifier-like field"
+    },
+    {
+      "column": "DOL Vehicle ID",
+      "non_missing": 299705,
+      "missing": 0,
+      "missing_pct": 0.0,
+      "unique": 299705,
+      "unique_ratio": 1.0,
+      "notes": [
+        "numeric code: column name suggests an identifier/code, so it is not treated as a measurement"
+      ],
+      "non_conforming_count": 0,
+      "non_conforming_examples": [],
+      "exclude_from_correlation": false,
+      "technical_type": "integer",
+      "role": "Identifier-like field"
+    },
+    {
+      "column": "Vehicle Location",
+      "non_missing": 299685,
+      "missing": 20,
+      "missing_pct": 0.01,
+      "unique": 1199,
+      "unique_ratio": 0.004,
+      "notes": [],
+      "non_conforming_count": 0,
+      "non_conforming_examples": [],
+      "exclude_from_correlation": false,
+      "technical_type": "string",
+      "role": "Categorical attribute"
+    },
+    {
+      "column": "Electric Utility",
+      "non_missing": 299694,
+      "missing": 11,
+      "missing_pct": 0.0,
+      "unique": 77,
+      "unique_ratio": 0.0003,
+      "notes": [],
+      "non_conforming_count": 0,
+      "non_conforming_examples": [],
+      "exclude_from_correlation": false,
+      "technical_type": "string",
+      "role": "Categorical attribute"
+    },
+    {
+      "column": "2020 GEOID",
+      "non_missing": 299694,
+      "missing": 11,
+      "missing_pct": 0.0,
+      "unique": 2466,
+      "unique_ratio": 0.0082,
+      "notes": [
+        "numeric code: column name suggests an identifier/code, so it is not treated as a measurement"
+      ],
+      "non_conforming_count": 0,
+      "non_conforming_examples": [],
+      "exclude_from_correlation": false,
+      "technical_type": "integer",
+      "role": "Identifier-like field"
+    }
+  ],
+  "data_quality": {
+    "duplicate_rows": 0,
+    "duplicate_rows_pct": 0.0,
+    "total_missing_cells": 891,
+    "total_missing_cells_pct": 0.02,
+    "rows_with_any_missing": 825,
+    "rows_with_any_missing_pct": 0.28,
+    "high_missing_threshold_pct": 30.0,
+    "high_missing_columns": [],
+    "constant_columns": [],
+    "empty_columns": [],
+    "mixed_type_columns": [],
+    "identifier_or_high_cardinality_columns": [
+      {
+        "column": "VIN (1-10)",
+        "unique": 18376,
+        "unique_ratio": 0.0613,
+        "role": "Categorical attribute"
+      },
+      {
+        "column": "County",
+        "unique": 255,
+        "unique_ratio": 0.0009,
+        "role": "Categorical attribute"
+      },
+      {
+        "column": "City",
+        "unique": 941,
+        "unique_ratio": 0.0031,
+        "role": "Categorical attribute"
+      },
+      {
+        "column": "Postal Code",
+        "unique": 1201,
+        "unique_ratio": 0.004,
+        "role": "Identifier-like field"
+      },
+      {
+        "column": "Make",
+        "unique": 51,
+        "unique_ratio": 0.0002,
+        "role": "Categorical attribute"
+      },
+      {
+        "column": "Model",
+        "unique": 202,
+        "unique_ratio": 0.0007,
+        "role": "Categorical attribute"
+      },
+      {
+        "column": "Legislative District",
+        "unique": 49,
+        "unique_ratio": 0.0002,
+        "role": "Identifier-like field"
+      },
+      {
+        "column": "DOL Vehicle ID",
+        "unique": 299705,
+        "unique_ratio": 1.0,
+        "role": "Identifier-like field"
+      },
+      {
+        "column": "Vehicle Location",
+        "unique": 1199,
+        "unique_ratio": 0.004,
+        "role": "Categorical attribute"
+      },
+      {
+        "column": "Electric Utility",
+        "unique": 77,
+        "unique_ratio": 0.0003,
+        "role": "Categorical attribute"
+      },
+      {
+        "column": "2020 GEOID",
+        "unique": 2466,
+        "unique_ratio": 0.0082,
+        "role": "Identifier-like field"
+      }
+    ],
+    "possible_placeholder_values": [],
+    "sensitive_field_warnings": [
+      {
+        "column": "VIN (1-10)",
+        "reasons": [
+          "vehicle identifier"
+        ]
+      },
+      {
+        "column": "Postal Code",
+        "reasons": [
+          "postal code"
+        ]
+      },
+      {
+        "column": "Vehicle Location",
+        "reasons": [
+          "location",
+          "values look like geographic point (100% of sampled values)"
+        ]
+      }
+    ]
+  },
+  "numeric_statistics": {
+    "Electric Range": {
+      "valid_count": 299679,
+      "missing_count": 26,
+      "missing_pct": 0.01,
+      "min": 0.0,
+      "max": 337.0,
+      "mean": 36.66331307832714,
+      "median": 0.0,
+      "mode": 0.0,
+      "mode_count": 196235,
+      "mode_note": null,
+      "std": 76.03442251419314,
+      "q1": 0.0,
+      "q3": 32.0,
+      "iqr": 32.0,
+      "lower_fence": -48.0,
+      "upper_fence": 80.0,
+      "outliers_low": 0,
+      "outliers_high": 43197,
+      "outlier_count": 43197,
+      "outlier_pct": 14.41,
+      "skewness": 2.2653809479243012,
+      "zero_count": 196235,
+      "zero_pct": 65.48,
+      "negative_count": 0
+    }
+  },
+  "categorical_statistics": {
+    "VIN (1-10)": {
+      "role": "Categorical attribute",
+      "valid_count": 299705,
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "unique": 18376,
+      "most_frequent": [
+        "7SAYGDEE7P"
+      ],
+      "most_frequent_count": 1228,
+      "top_values": [
+        {
+          "value": "7SAYGDEE7P",
+          "count": 1228,
+          "pct_of_non_missing": 0.41,
+          "pct_of_rows": 0.41
+        },
+        {
+          "value": "7SAYGDEE6P",
+          "count": 1219,
+          "pct_of_non_missing": 0.41,
+          "pct_of_rows": 0.41
+        },
+        {
+          "value": "7SAYGDEE9T",
+          "count": 1207,
+          "pct_of_non_missing": 0.4,
+          "pct_of_rows": 0.4
+        },
+        {
+          "value": "7SAYGDEE1T",
+          "count": 1186,
+          "pct_of_non_missing": 0.4,
+          "pct_of_rows": 0.4
+        },
+        {
+          "value": "7SAYGDEE4T",
+          "count": 1181,
+          "pct_of_non_missing": 0.39,
+          "pct_of_rows": 0.39
+        },
+        {
+          "value": "7SAYGDEEXT",
+          "count": 1179,
+          "pct_of_non_missing": 0.39,
+          "pct_of_rows": 0.39
+        },
+        {
+          "value": "7SAYGDEE0T",
+          "count": 1177,
+          "pct_of_non_missing": 0.39,
+          "pct_of_rows": 0.39
+        },
+        {
+          "value": "7SAYGDEE8P",
+          "count": 1177,
+          "pct_of_non_missing": 0.39,
+          "pct_of_rows": 0.39
+        },
+        {
+          "value": "7SAYGDEE5P",
+          "count": 1176,
+          "pct_of_non_missing": 0.39,
+          "pct_of_rows": 0.39
+        },
+        {
+          "value": "7SAYGDEEXP",
+          "count": 1175,
+          "pct_of_non_missing": 0.39,
+          "pct_of_rows": 0.39
+        }
+      ],
+      "shown": 10,
+      "other_count": 287800,
+      "other_pct_of_non_missing": 96.03
+    },
+    "County": {
+      "role": "Categorical attribute",
+      "valid_count": 299694,
+      "missing_count": 11,
+      "missing_pct": 0.0,
+      "unique": 255,
+      "most_frequent": [
+        "King"
+      ],
+      "most_frequent_count": 144257,
+      "top_values": [
+        {
+          "value": "King",
+          "count": 144257,
+          "pct_of_non_missing": 48.13,
+          "pct_of_rows": 48.13
+        },
+        {
+          "value": "Snohomish",
+          "count": 37818,
+          "pct_of_non_missing": 12.62,
+          "pct_of_rows": 12.62
+        },
+        {
+          "value": "Pierce",
+          "count": 25042,
+          "pct_of_non_missing": 8.36,
+          "pct_of_rows": 8.36
+        },
+        {
+          "value": "Clark",
+          "count": 18803,
+          "pct_of_non_missing": 6.27,
+          "pct_of_rows": 6.27
+        },
+        {
+          "value": "Thurston",
+          "count": 10985,
+          "pct_of_non_missing": 3.67,
+          "pct_of_rows": 3.67
+        },
+        {
+          "value": "Kitsap",
+          "count": 10351,
+          "pct_of_non_missing": 3.45,
+          "pct_of_rows": 3.45
+        },
+        {
+          "value": "Spokane",
+          "count": 8741,
+          "pct_of_non_missing": 2.92,
+          "pct_of_rows": 2.92
+        },
+        {
+          "value": "Whatcom",
+          "count": 7560,
+          "pct_of_non_missing": 2.52,
+          "pct_of_rows": 2.52
+        },
+        {
+          "value": "Benton",
+          "count": 4507,
+          "pct_of_non_missing": 1.5,
+          "pct_of_rows": 1.5
+        },
+        {
+          "value": "Skagit",
+          "count": 3570,
+          "pct_of_non_missing": 1.19,
+          "pct_of_rows": 1.19
+        }
+      ],
+      "shown": 10,
+      "other_count": 28060,
+      "other_pct_of_non_missing": 9.36
+    },
+    "City": {
+      "role": "Categorical attribute",
+      "valid_count": 299694,
+      "missing_count": 11,
+      "missing_pct": 0.0,
+      "unique": 941,
+      "most_frequent": [
+        "Seattle"
+      ],
+      "most_frequent_count": 45469,
+      "top_values": [
+        {
+          "value": "Seattle",
+          "count": 45469,
+          "pct_of_non_missing": 15.17,
+          "pct_of_rows": 15.17
+        },
+        {
+          "value": "Bellevue",
+          "count": 14386,
+          "pct_of_non_missing": 4.8,
+          "pct_of_rows": 4.8
+        },
+        {
+          "value": "Vancouver",
+          "count": 11215,
+          "pct_of_non_missing": 3.74,
+          "pct_of_rows": 3.74
+        },
+        {
+          "value": "Redmond",
+          "count": 10135,
+          "pct_of_non_missing": 3.38,
+          "pct_of_rows": 3.38
+        },
+        {
+          "value": "Bothell",
+          "count": 9819,
+          "pct_of_non_missing": 3.28,
+          "pct_of_rows": 3.28
+        },
+        {
+          "value": "Kirkland",
+          "count": 8487,
+          "pct_of_non_missing": 2.83,
+          "pct_of_rows": 2.83
+        },
+        {
+          "value": "Sammamish",
+          "count": 8129,
+          "pct_of_non_missing": 2.71,
+          "pct_of_rows": 2.71
+        },
+        {
+          "value": "Renton",
+          "count": 7897,
+          "pct_of_non_missing": 2.64,
+          "pct_of_rows": 2.63
+        },
+        {
+          "value": "Olympia",
+          "count": 7016,
+          "pct_of_non_missing": 2.34,
+          "pct_of_rows": 2.34
+        },
+        {
+          "value": "Tacoma",
+          "count": 6651,
+          "pct_of_non_missing": 2.22,
+          "pct_of_rows": 2.22
+        }
+      ],
+      "shown": 10,
+      "other_count": 170490,
+      "other_pct_of_non_missing": 56.89
+    },
+    "State": {
+      "role": "Categorical attribute",
+      "valid_count": 299705,
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "unique": 50,
+      "most_frequent": [
+        "WA"
+      ],
+      "most_frequent_count": 298916,
+      "top_values": [
+        {
+          "value": "WA",
+          "count": 298916,
+          "pct_of_non_missing": 99.74,
+          "pct_of_rows": 99.74
+        },
+        {
+          "value": "CA",
+          "count": 180,
+          "pct_of_non_missing": 0.06,
+          "pct_of_rows": 0.06
+        },
+        {
+          "value": "VA",
+          "count": 105,
+          "pct_of_non_missing": 0.04,
+          "pct_of_rows": 0.04
+        },
+        {
+          "value": "MD",
+          "count": 46,
+          "pct_of_non_missing": 0.02,
+          "pct_of_rows": 0.02
+        },
+        {
+          "value": "TX",
+          "count": 46,
+          "pct_of_non_missing": 0.02,
+          "pct_of_rows": 0.02
+        },
+        {
+          "value": "FL",
+          "count": 44,
+          "pct_of_non_missing": 0.01,
+          "pct_of_rows": 0.01
+        },
+        {
+          "value": "OR",
+          "count": 28,
+          "pct_of_non_missing": 0.01,
+          "pct_of_rows": 0.01
+        },
+        {
+          "value": "NV",
+          "count": 27,
+          "pct_of_non_missing": 0.01,
+          "pct_of_rows": 0.01
+        },
+        {
+          "value": "CO",
+          "count": 25,
+          "pct_of_non_missing": 0.01,
+          "pct_of_rows": 0.01
+        },
+        {
+          "value": "AZ",
+          "count": 25,
+          "pct_of_non_missing": 0.01,
+          "pct_of_rows": 0.01
+        }
+      ],
+      "shown": 10,
+      "other_count": 263,
+      "other_pct_of_non_missing": 0.09
+    },
+    "Make": {
+      "role": "Categorical attribute",
+      "valid_count": 299705,
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "unique": 51,
+      "most_frequent": [
+        "TESLA"
+      ],
+      "most_frequent_count": 122981,
+      "top_values": [
+        {
+          "value": "TESLA",
+          "count": 122981,
+          "pct_of_non_missing": 41.03,
+          "pct_of_rows": 41.03
+        },
+        {
+          "value": "CHEVROLET",
+          "count": 20236,
+          "pct_of_non_missing": 6.75,
+          "pct_of_rows": 6.75
+        },
+        {
+          "value": "FORD",
+          "count": 16118,
+          "pct_of_non_missing": 5.38,
+          "pct_of_rows": 5.38
+        },
+        {
+          "value": "NISSAN",
+          "count": 16053,
+          "pct_of_non_missing": 5.36,
+          "pct_of_rows": 5.36
+        },
+        {
+          "value": "KIA",
+          "count": 14776,
+          "pct_of_non_missing": 4.93,
+          "pct_of_rows": 4.93
+        },
+        {
+          "value": "TOYOTA",
+          "count": 13998,
+          "pct_of_non_missing": 4.67,
+          "pct_of_rows": 4.67
+        },
+        {
+          "value": "BMW",
+          "count": 12356,
+          "pct_of_non_missing": 4.12,
+          "pct_of_rows": 4.12
+        },
+        {
+          "value": "HYUNDAI",
+          "count": 12351,
+          "pct_of_non_missing": 4.12,
+          "pct_of_rows": 4.12
+        },
+        {
+          "value": "RIVIAN",
+          "count": 9817,
+          "pct_of_non_missing": 3.28,
+          "pct_of_rows": 3.28
+        },
+        {
+          "value": "VOLVO",
+          "count": 8187,
+          "pct_of_non_missing": 2.73,
+          "pct_of_rows": 2.73
+        }
+      ],
+      "shown": 10,
+      "other_count": 52832,
+      "other_pct_of_non_missing": 17.63
+    },
+    "Model": {
+      "role": "Categorical attribute",
+      "valid_count": 299705,
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "unique": 202,
+      "most_frequent": [
+        "MODEL Y"
+      ],
+      "most_frequent_count": 66545,
+      "top_values": [
+        {
+          "value": "MODEL Y",
+          "count": 66545,
+          "pct_of_non_missing": 22.2,
+          "pct_of_rows": 22.2
+        },
+        {
+          "value": "MODEL 3",
+          "count": 39391,
+          "pct_of_non_missing": 13.14,
+          "pct_of_rows": 13.14
+        },
+        {
+          "value": "LEAF",
+          "count": 13453,
+          "pct_of_non_missing": 4.49,
+          "pct_of_rows": 4.49
+        },
+        {
+          "value": "MODEL S",
+          "count": 7873,
+          "pct_of_non_missing": 2.63,
+          "pct_of_rows": 2.63
+        },
+        {
+          "value": "BOLT EV",
+          "count": 7642,
+          "pct_of_non_missing": 2.55,
+          "pct_of_rows": 2.55
+        },
+        {
+          "value": "IONIQ 5",
+          "count": 7531,
+          "pct_of_non_missing": 2.51,
+          "pct_of_rows": 2.51
+        },
+        {
+          "value": "MODEL X",
+          "count": 7177,
+          "pct_of_non_missing": 2.39,
+          "pct_of_rows": 2.39
+        },
+        {
+          "value": "MUSTANG MACH-E",
+          "count": 6865,
+          "pct_of_non_missing": 2.29,
+          "pct_of_rows": 2.29
+        },
+        {
+          "value": "ID.4",
+          "count": 6337,
+          "pct_of_non_missing": 2.11,
+          "pct_of_rows": 2.11
+        },
+        {
+          "value": "R1S",
+          "count": 5632,
+          "pct_of_non_missing": 1.88,
+          "pct_of_rows": 1.88
+        }
+      ],
+      "shown": 10,
+      "other_count": 131259,
+      "other_pct_of_non_missing": 43.8
+    },
+    "Electric Vehicle Type": {
+      "role": "Categorical attribute",
+      "valid_count": 299705,
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "unique": 2,
+      "most_frequent": [
+        "Battery Electric Vehicle (BEV)"
+      ],
+      "most_frequent_count": 241724,
+      "top_values": [
+        {
+          "value": "Battery Electric Vehicle (BEV)",
+          "count": 241724,
+          "pct_of_non_missing": 80.65,
+          "pct_of_rows": 80.65
+        },
+        {
+          "value": "Plug-in Hybrid Electric Vehicle (PHEV)",
+          "count": 57981,
+          "pct_of_non_missing": 19.35,
+          "pct_of_rows": 19.35
+        }
+      ],
+      "shown": 2,
+      "other_count": 0,
+      "other_pct_of_non_missing": 0.0
+    },
+    "Clean Alternative Fuel Vehicle (CAFV) Eligibility": {
+      "role": "Categorical attribute",
+      "valid_count": 299705,
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "unique": 3,
+      "most_frequent": [
+        "Eligibility unknown as battery range has not been researched"
+      ],
+      "most_frequent_count": 196235,
+      "top_values": [
+        {
+          "value": "Eligibility unknown as battery range has not been researched",
+          "count": 196235,
+          "pct_of_non_missing": 65.48,
+          "pct_of_rows": 65.48
+        },
+        {
+          "value": "Clean Alternative Fuel Vehicle Eligible",
+          "count": 79293,
+          "pct_of_non_missing": 26.46,
+          "pct_of_rows": 26.46
+        },
+        {
+          "value": "Not eligible due to low battery range",
+          "count": 24177,
+          "pct_of_non_missing": 8.07,
+          "pct_of_rows": 8.07
+        }
+      ],
+      "shown": 3,
+      "other_count": 0,
+      "other_pct_of_non_missing": 0.0
+    },
+    "Vehicle Location": {
+      "role": "Categorical attribute",
+      "valid_count": 299685,
+      "missing_count": 20,
+      "missing_pct": 0.01,
+      "unique": 1199,
+      "most_frequent": [
+        "POINT (-122.13158 47.67858)"
+      ],
+      "most_frequent_count": 7155,
+      "top_values": [
+        {
+          "value": "POINT (-122.13158 47.67858)",
+          "count": 7155,
+          "pct_of_non_missing": 2.39,
+          "pct_of_rows": 2.39
+        },
+        {
+          "value": "POINT (-122.20105 47.84423)",
+          "count": 5739,
+          "pct_of_non_missing": 1.92,
+          "pct_of_rows": 1.91
+        },
+        {
+          "value": "POINT (-122.2066 47.67887)",
+          "count": 4816,
+          "pct_of_non_missing": 1.61,
+          "pct_of_rows": 1.61
+        },
+        {
+          "value": "POINT (-122.12096 47.55584)",
+          "count": 4629,
+          "pct_of_non_missing": 1.54,
+          "pct_of_rows": 1.54
+        },
+        {
+          "value": "POINT (-122.1872 47.61001)",
+          "count": 4204,
+          "pct_of_non_missing": 1.4,
+          "pct_of_rows": 1.4
+        },
+        {
+          "value": "POINT (-122.3185 47.67949)",
+          "count": 4168,
+          "pct_of_non_missing": 1.39,
+          "pct_of_rows": 1.39
+        },
+        {
+          "value": "POINT (-122.03133 47.62858)",
+          "count": 3843,
+          "pct_of_non_missing": 1.28,
+          "pct_of_rows": 1.28
+        },
+        {
+          "value": "POINT (-122.20928 47.71124)",
+          "count": 3771,
+          "pct_of_non_missing": 1.26,
+          "pct_of_rows": 1.26
+        },
+        {
+          "value": "POINT (-122.15545 47.75448)",
+          "count": 3757,
+          "pct_of_non_missing": 1.25,
+          "pct_of_rows": 1.25
+        },
+        {
+          "value": "POINT (-122.21238 47.57816)",
+          "count": 3332,
+          "pct_of_non_missing": 1.11,
+          "pct_of_rows": 1.11
+        }
+      ],
+      "shown": 10,
+      "other_count": 254271,
+      "other_pct_of_non_missing": 84.85
+    },
+    "Electric Utility": {
+      "role": "Categorical attribute",
+      "valid_count": 299694,
+      "missing_count": 11,
+      "missing_pct": 0.0,
+      "unique": 77,
+      "most_frequent": [
+        "PUGET SOUND ENERGY INC||CITY OF TACOMA - (WA)"
+      ],
+      "most_frequent_count": 103988,
+      "top_values": [
+        {
+          "value": "PUGET SOUND ENERGY INC||CITY OF TACOMA - (WA)",
+          "count": 103988,
+          "pct_of_non_missing": 34.7,
+          "pct_of_rows": 34.7
+        },
+        {
+          "value": "PUGET SOUND ENERGY INC",
+          "count": 63791,
+          "pct_of_non_missing": 21.29,
+          "pct_of_rows": 21.28
+        },
+        {
+          "value": "CITY OF SEATTLE - (WA)|CITY OF TACOMA - (WA)",
+          "count": 48888,
+          "pct_of_non_missing": 16.31,
+          "pct_of_rows": 16.31
+        },
+        {
+          "value": "BONNEVILLE POWER ADMINISTRATION||PUD NO 1 OF CLARK COUNTY - (WA)",
+          "count": 18318,
+          "pct_of_non_missing": 6.11,
+          "pct_of_rows": 6.11
+        },
+        {
+          "value": "BONNEVILLE POWER ADMINISTRATION||CITY OF TACOMA - (WA)||PENINSULA LIGHT COMPANY",
+          "count": 13964,
+          "pct_of_non_missing": 4.66,
+          "pct_of_rows": 4.66
+        },
+        {
+          "value": "PUGET SOUND ENERGY INC||PUD NO 1 OF WHATCOM COUNTY",
+          "count": 7120,
+          "pct_of_non_missing": 2.38,
+          "pct_of_rows": 2.38
+        },
+        {
+          "value": "BONNEVILLE POWER ADMINISTRATION||AVISTA CORP||INLAND POWER & LIGHT COMPANY",
+          "count": 5515,
+          "pct_of_non_missing": 1.84,
+          "pct_of_rows": 1.84
+        },
+        {
+          "value": "BONNEVILLE POWER ADMINISTRATION||PUD 1 OF SNOHOMISH COUNTY",
+          "count": 2959,
+          "pct_of_non_missing": 0.99,
+          "pct_of_rows": 0.99
+        },
+        {
+          "value": "PACIFICORP",
+          "count": 2773,
+          "pct_of_non_missing": 0.93,
+          "pct_of_rows": 0.93
+        },
+        {
+          "value": "BONNEVILLE POWER ADMINISTRATION||PUD NO 1 OF BENTON COUNTY",
+          "count": 2684,
+          "pct_of_non_missing": 0.9,
+          "pct_of_rows": 0.9
+        }
+      ],
+      "shown": 10,
+      "other_count": 29694,
+      "other_pct_of_non_missing": 9.91
+    }
+  },
+  "date_statistics": {
+    "Model Year": {
+      "valid_count": 299705,
+      "missing_count": 0,
+      "missing_pct": 0.0,
+      "min": 1999,
+      "max": 2027,
+      "granularity": "year",
+      "counts_by_period": {
+        "1999": 3,
+        "2000": 8,
+        "2002": 1,
+        "2003": 1,
+        "2008": 17,
+        "2010": 19,
+        "2011": 529,
+        "2012": 1290,
+        "2013": 3851,
+        "2014": 3151,
+        "2015": 4381,
+        "2016": 5031,
+        "2017": 8431,
+        "2018": 13982,
+        "2019": 10827,
+        "2020": 12191,
+        "2021": 20872,
+        "2022": 30278,
+        "2023": 61595,
+        "2024": 49413,
+        "2025": 37007,
+        "2026": 36272,
+        "2027": 555
+      }
+    }
+  },
+  "relationships": {
+    "numeric_columns_used": [
+      "Electric Range"
+    ],
+    "numeric_columns_available": 1,
+    "excluded_from_correlation": [
+      "2020 GEOID",
+      "DOL Vehicle ID",
+      "Legislative District",
+      "Model Year",
+      "Postal Code"
+    ],
+    "skipped": "correlation analysis needs at least 2 numeric measure columns; found 1"
+  },
+  "group_comparison": {
+    "group_column": "Clean Alternative Fuel Vehicle (CAFV) Eligibility",
+    "measure": "Electric Range",
+    "groups": [
+      {
+        "group": "Clean Alternative Fuel Vehicle Eligible",
+        "count": 79267,
+        "median": 84.0,
+        "mean": 132.29133182787288
+      },
+      {
+        "group": "Not eligible due to low battery range",
+        "count": 24177,
+        "median": 21.0,
+        "mean": 20.717541465028745
+      },
+      {
+        "group": "Eligibility unknown as battery range has not been researched",
+        "count": 196235,
+        "median": 0.0,
+        "mean": 0.0
+      }
+    ],
+    "note": "Top groups by frequency; medians computed by Python on non-missing rows."
+  },
+  "skipped_analyses": [
+    "correlation analysis needs at least 2 numeric measure columns; found 1"
+  ],
+  "limitations": [
+    "Types and roles are inferred from values and generic name hints; they can be wrong for unusual columns.",
+    "Column meanings, units and valid ranges are undocumented in a bare CSV and are not interpreted.",
+    "Outliers use the 1.5\u00d7IQR rule, which flags many points in skewed distributions; flagged values are not necessarily errors.",
+    "Pearson correlation captures only linear association and is sensitive to outliers; no correlation implies causation.",
+    "Sensitive-field detection is a heuristic; no warning does not mean the data are safe.",
+    "Placeholder values (e.g. 'unknown', -999) are flagged but not converted unless listed in config.missing_codes."
+  ],
+  "plots": [
+    {
+      "file": "plots/plot_01_missing_bar.png",
+      "type": "missing_bar",
+      "title": "Missing-value bar chart",
+      "why": "which columns are incomplete"
+    },
+    {
+      "file": "plots/plot_02_histogram.png",
+      "type": "histogram",
+      "title": "Histogram of Electric Range",
+      "why": "the shape and skew of the most complete continuous measure"
+    },
+    {
+      "file": "plots/plot_03_boxplot.png",
+      "type": "boxplot",
+      "title": "Boxplot of Electric Range",
+      "why": "the median, IQR and 1.5\u00d7IQR potential outliers"
+    },
+    {
+      "file": "plots/plot_04_category_bar.png",
+      "type": "category_bar",
+      "title": "Frequency of Make",
+      "why": "how rows are spread across categories"
+    },
+    {
+      "file": "plots/plot_05_group_box.png",
+      "type": "group_box",
+      "title": "Electric Range by Clean Alternative Fuel Vehicle (CAFV) Eligibility",
+      "why": "how a numeric measure differs across categories"
+    },
+    {
+      "file": "plots/plot_06_time_series.png",
+      "type": "time_series",
+      "title": "Rows over time (Model Year)",
+      "why": "how many rows fall in each time period (temporal coverage)"
+    },
+    {
+      "file": "plots/plot_07_category_bar.png",
+      "type": "category_bar",
+      "title": "Frequency of Electric Utility",
+      "why": "frequencies for a second categorical column"
+    }
+  ],
+  "plots_skipped": [
+    {
+      "plot": "Correlation heatmap",
+      "reason": "correlation analysis needs at least 2 numeric measure columns; found 1"
+    },
+    {
+      "plot": "Scatterplot",
+      "reason": "no pair of numeric measures with enough overlapping values"
+    }
+  ],
+  "llm_facts": [
+    {
+      "id": "F1",
+      "category": "overview",
+      "text": "The file wa_electric_vehicle_population.csv has 299,705 rows and 16 columns.",
+      "columns": []
+    },
+    {
+      "id": "F2",
+      "category": "overview",
+      "text": "Inferred column roles (count of columns): Categorical attribute: 10, Identifier-like field: 4, Date-like field: 1, Numeric measure: 1.",
+      "columns": []
+    },
+    {
+      "id": "F3",
+      "category": "data quality",
+      "text": "There are 0 fully duplicated rows (0.0% of rows).",
+      "columns": []
+    },
+    {
+      "id": "F4",
+      "category": "data quality",
+      "text": "891 of all cells are missing (0.02%); 825 rows (0.28%) have at least one missing value.",
+      "columns": []
+    },
+    {
+      "id": "F5",
+      "category": "data quality",
+      "text": "Identifier-like or very high-cardinality columns (excluded from correlations): `VIN (1-10)`, `County`, `City`, `Postal Code`, `Make`, `Model`.",
+      "columns": [
+        "VIN (1-10)",
+        "County",
+        "City",
+        "Postal Code",
+        "Make",
+        "Model"
+      ]
+    },
+    {
+      "id": "F6",
+      "category": "limitation",
+      "text": "Heuristic sensitive-field warnings were raised for: `VIN (1-10)`, `Postal Code`, `Vehicle Location`. This is a name/pattern heuristic, not a privacy review.",
+      "columns": [
+        "VIN (1-10)",
+        "Postal Code",
+        "Vehicle Location"
+      ]
+    },
+    {
+      "id": "F7",
+      "category": "distribution",
+      "text": "`Electric Range`: n = 299,679, missing 0.01%, min 0, Q1 0, median 0, mean 36.66, Q3 32, max 337, std 76.03, skewness 2.27.",
+      "columns": [
+        "Electric Range"
+      ]
+    },
+    {
+      "id": "F8",
+      "category": "distribution",
+      "text": "`Electric Range` has 43,197 potential outliers by the 1.5\u00d7IQR rule (14.41% of valid values; 43,197 above 80, 0 below -48).",
+      "columns": [
+        "Electric Range"
+      ]
+    },
+    {
+      "id": "F9",
+      "category": "data quality",
+      "text": "`Electric Range` is exactly 0 in 196,235 rows (65.48% of valid values); zeros could be real or could stand for 'not recorded'.",
+      "columns": [
+        "Electric Range"
+      ]
+    },
+    {
+      "id": "F10",
+      "category": "categorical",
+      "text": "`Make` has 51 distinct values; most frequent: TESLA = 122,981 (41.03%); CHEVROLET = 20,236 (6.75%); FORD = 16,118 (5.38%); NISSAN = 16,053 (5.36%).",
+      "columns": [
+        "Make"
+      ]
+    },
+    {
+      "id": "F11",
+      "category": "categorical",
+      "text": "`Electric Utility` has 77 distinct values; most frequent: PUGET SOUND ENERGY INC||CITY OF TACOMA - (WA) = 103,988 (34.7%); PUGET SOUND ENERGY INC = 63,791 (21.29%); CITY OF SEATTLE - (WA)|CITY OF TACOMA - (WA) = 48,888 (16.31%); BONNEVILLE POWER ADMINISTRATION||PUD NO 1 OF CLARK COUNTY - (WA) = 18,318 (6.11%).",
+      "columns": [
+        "Electric Utility"
+      ]
+    },
+    {
+      "id": "F12",
+      "category": "categorical",
+      "text": "`Clean Alternative Fuel Vehicle (CAFV) Eligibility` has 3 distinct values; most frequent: Eligibility unknown as battery range has not been researched = 196,235 (65.48%); Clean Alternative Fuel Vehicle Eligible = 79,293 (26.46%); Not eligible due to low battery range = 24,177 (8.07%).",
+      "columns": [
+        "Clean Alternative Fuel Vehicle (CAFV) Eligibility"
+      ]
+    },
+    {
+      "id": "F13",
+      "category": "categorical",
+      "text": "`Electric Vehicle Type` has 2 distinct values; most frequent: Battery Electric Vehicle (BEV) = 241,724 (80.65%); Plug-in Hybrid Electric Vehicle (PHEV) = 57,981 (19.35%).",
+      "columns": [
+        "Electric Vehicle Type"
+      ]
+    },
+    {
+      "id": "F14",
+      "category": "categorical",
+      "text": "`State` has 50 distinct values; most frequent: WA = 298,916 (99.74%); CA = 180 (0.06%); VA = 105 (0.04%); MD = 46 (0.02%).",
+      "columns": [
+        "State"
+      ]
+    },
+    {
+      "id": "F15",
+      "category": "categorical",
+      "text": "`VIN (1-10)` has 18,376 distinct values; most frequent: 7SAYGDEE7P = 1228 (0.41%); 7SAYGDEE6P = 1219 (0.41%); 7SAYGDEE9T = 1207 (0.4%); 7SAYGDEE1T = 1186 (0.4%).",
+      "columns": [
+        "VIN (1-10)"
+      ]
+    },
+    {
+      "id": "F16",
+      "category": "distribution",
+      "text": "`Model Year` ranges from 1999 to 2027 (299,705 non-missing values, 0.0% missing).",
+      "columns": [
+        "Model Year"
+      ]
+    },
+    {
+      "id": "F17",
+      "category": "relationship",
+      "text": "Correlation analysis was skipped: correlation analysis needs at least 2 numeric measure columns; found 1.",
+      "columns": []
+    },
+    {
+      "id": "F18",
+      "category": "categorical",
+      "text": "Median `Electric Range` by `Clean Alternative Fuel Vehicle (CAFV) Eligibility`: Clean Alternative Fuel Vehicle Eligible: median 84 (n = 79,267); Not eligible due to low battery range: median 21 (n = 24,177); Eligibility unknown as battery range has not been researched: median 0 (n = 196,235).",
+      "columns": [
+        "Electric Range",
+        "Clean Alternative Fuel Vehicle (CAFV) Eligibility"
+      ]
+    },
+    {
+      "id": "F19",
+      "category": "limitation",
+      "text": "Column meanings, units and valid ranges are not documented in the CSV; the profiler infers structure only, not meaning.",
+      "columns": []
+    },
+    {
+      "id": "F20",
+      "category": "limitation",
+      "text": "Skipped: correlation analysis needs at least 2 numeric measure columns; found 1",
+      "columns": []
+    }
+  ],
+  "llm": {
+    "model": "qwen2.5:7b",
+    "host": "http://localhost:11434",
+    "status": "used",
+    "returned_count": 6,
+    "verified_count": 5
+  },
+  "insights": [
+    {
+      "category": "data quality",
+      "text": "There are no fully duplicated rows, indicating data integrity (F3).",
+      "fact_ids": [
+        "F3"
+      ],
+      "auto_fact_ids": [],
+      "columns_mentioned": [],
+      "status": "VERIFIED",
+      "problems": [],
+      "evidence": [
+        "F3: There are 0 fully duplicated rows (0.0% of rows)."
+      ],
+      "source": "llm"
+    },
+    {
+      "category": "distribution",
+      "text": "The `Electric Range` column has a high proportion of zeros (65.48%), which could indicate missing or 'not recorded' data (F9).",
+      "fact_ids": [
+        "F9"
+      ],
+      "auto_fact_ids": [],
+      "columns_mentioned": [
+        "Electric Range"
+      ],
+      "status": "VERIFIED",
+      "problems": [],
+      "evidence": [
+        "F9: `Electric Range` is exactly 0 in 196,235 rows (65.48% of valid values); zeros could be real or could stand for 'not recorded'."
+      ],
+      "source": "llm"
+    },
+    {
+      "category": "categorical",
+      "text": "The `Make` column is dominated by a few manufacturers, with Tesla being the most frequent (41.03%) (F10).",
+      "fact_ids": [
+        "F10"
+      ],
+      "auto_fact_ids": [],
+      "columns_mentioned": [
+        "Make"
+      ],
+      "status": "VERIFIED",
+      "problems": [],
+      "evidence": [
+        "F10: `Make` has 51 distinct values; most frequent: TESLA = 122,981 (41.03%); CHEVROLET = 20,236 (6.75%); FORD = 16,118 (5.38%); NISSAN = 16,053 (5.36%)."
+      ],
+      "source": "llm"
+    },
+    {
+      "category": "limitation",
+      "text": "The column meanings and units are not documented, making it difficult to interpret the data (F19).",
+      "fact_ids": [
+        "F19"
+      ],
+      "auto_fact_ids": [],
+      "columns_mentioned": [],
+      "status": "VERIFIED",
+      "problems": [],
+      "evidence": [
+        "F19: Column meanings, units and valid ranges are not documented in the CSV; the profiler infers structure only, not meaning."
+      ],
+      "source": "llm"
+    },
+    {
+      "category": "follow-up question",
+      "text": "It would be useful to investigate why `Electric Range` has so many zeros and what they represent (F9).",
+      "fact_ids": [
+        "F9"
+      ],
+      "auto_fact_ids": [],
+      "columns_mentioned": [
+        "Electric Range"
+      ],
+      "status": "VERIFIED",
+      "problems": [],
+      "evidence": [
+        "F9: `Electric Range` is exactly 0 in 196,235 rows (65.48% of valid values); zeros could be real or could stand for 'not recorded'."
+      ],
+      "source": "llm"
+    }
+  ],
+  "claim_verification": [
+    {
+      "category": "data quality",
+      "text": "There are no fully duplicated rows, indicating data integrity (F3).",
+      "fact_ids": [
+        "F3"
+      ],
+      "auto_fact_ids": [],
+      "columns_mentioned": [],
+      "status": "VERIFIED",
+      "problems": [],
+      "evidence": [
+        "F3: There are 0 fully duplicated rows (0.0% of rows)."
+      ]
+    },
+    {
+      "category": "distribution",
+      "text": "The `Electric Range` column has a high proportion of zeros (65.48%), which could indicate missing or 'not recorded' data (F9).",
+      "fact_ids": [
+        "F9"
+      ],
+      "auto_fact_ids": [],
+      "columns_mentioned": [
+        "Electric Range"
+      ],
+      "status": "VERIFIED",
+      "problems": [],
+      "evidence": [
+        "F9: `Electric Range` is exactly 0 in 196,235 rows (65.48% of valid values); zeros could be real or could stand for 'not recorded'."
+      ]
+    },
+    {
+      "category": "categorical",
+      "text": "The `Make` column is dominated by a few manufacturers, with Tesla being the most frequent (41.03%) (F10).",
+      "fact_ids": [
+        "F10"
+      ],
+      "auto_fact_ids": [],
+      "columns_mentioned": [
+        "Make"
+      ],
+      "status": "VERIFIED",
+      "problems": [],
+      "evidence": [
+        "F10: `Make` has 51 distinct values; most frequent: TESLA = 122,981 (41.03%); CHEVROLET = 20,236 (6.75%); FORD = 16,118 (5.38%); NISSAN = 16,053 (5.36%)."
+      ]
+    },
+    {
+      "category": "limitation",
+      "text": "The column meanings and units are not documented, making it difficult to interpret the data (F19).",
+      "fact_ids": [
+        "F19"
+      ],
+      "auto_fact_ids": [],
+      "columns_mentioned": [],
+      "status": "VERIFIED",
+      "problems": [],
+      "evidence": [
+        "F19: Column meanings, units and valid ranges are not documented in the CSV; the profiler infers structure only, not meaning."
+      ]
+    },
+    {
+      "category": "follow-up question",
+      "text": "It would be useful to investigate why `Electric Range` has so many zeros and what they represent (F9).",
+      "fact_ids": [
+        "F9"
+      ],
+      "auto_fact_ids": [],
+      "columns_mentioned": [
+        "Electric Range"
+      ],
+      "status": "VERIFIED",
+      "problems": [],
+      "evidence": [
+        "F9: `Electric Range` is exactly 0 in 196,235 rows (65.48% of valid values); zeros could be real or could stand for 'not recorded'."
+      ]
+    },
+    {
+      "category": "categorical",
+      "text": "The `Clean Alternative Fuel Vehicle (CAFV) Eligibility` column shows that the majority of vehicles are not eligible due to low battery range (8.07%) (F12).",
+      "fact_ids": [
+        "F12"
+      ],
+      "auto_fact_ids": [],
+      "columns_mentioned": [
+        "Clean Alternative Fuel Vehicle (CAFV) Eligibility"
+      ],
+      "status": "REJECTED",
+      "problems": [
+        "says 'majority' but the percentage given is 8.07%"
+      ],
+      "evidence": [
+        "F12: `Clean Alternative Fuel Vehicle (CAFV) Eligibility` has 3 distinct values; most frequent: Eligibility unknown as battery range has not been researched = 196,235 (65.48%); Clean Alternative Fuel Vehicle Eligible = 79,293 (26.46%); Not eligible due to low battery range = 24,177 (8.07%)."
+      ]
+    }
+  ]
+}

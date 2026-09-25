@@ -1,0 +1,45 @@
+You are helping explain an automated data profile. All statistics below were computed by Python and are verified.
+
+RULES
+- Use ONLY the facts listed below. Do not calculate new numbers (no new sums, differences, ratios or percentages).
+- Copy every number exactly as it appears in the facts you cite.
+- EVERY insight MUST include "fact_ids": the IDs (e.g. "F12") of the facts it uses.
+- Refer to columns by their exact names in backticks, e.g. `column_name`.
+- Do not guess what a column means, its units, or why a pattern exists. If meaning is unclear, say it is undocumented.
+- Correlation is not causation. Never use words like "causes", "leads to", "drives", "due to", "because of".
+- Describe correlation strength honestly: |r| >= 0.7 strong, 0.4-0.7 moderate, below 0.4 weak. Never say "perfect" unless r is exactly 1.000.
+- Write between 5 and 8 insights, AT MOST 2 per category.
+- Include at least one insight in EACH of these categories: "data quality", "distribution", "categorical", "limitation", "follow-up question".
+  A "follow-up question" insight is a question worth investigating next.
+- Each insight is one or two sentences and should add interpretation, not just repeat a fact.
+
+Return ONLY valid JSON in exactly this shape:
+{"insights": [
+  {"category": "<one of the categories above>", "text": "<one or two complete sentences using exact numbers copied from the cited facts>", "fact_ids": ["<fact id>", "<fact id>"]}
+]}
+Do not copy the angle-bracket placeholders; replace them with real content. Never write "..." in an insight.
+
+VERIFIED FACTS
+F1 [overview] The file wa_electric_vehicle_population.csv has 299,705 rows and 16 columns.
+F2 [overview] Inferred column roles (count of columns): Categorical attribute: 10, Identifier-like field: 4, Date-like field: 1, Numeric measure: 1.
+F3 [data quality] There are 0 fully duplicated rows (0.0% of rows).
+F4 [data quality] 891 of all cells are missing (0.02%); 825 rows (0.28%) have at least one missing value.
+F5 [data quality] Identifier-like or very high-cardinality columns (excluded from correlations): `VIN (1-10)`, `County`, `City`, `Postal Code`, `Make`, `Model`.
+F6 [limitation] Heuristic sensitive-field warnings were raised for: `VIN (1-10)`, `Postal Code`, `Vehicle Location`. This is a name/pattern heuristic, not a privacy review.
+F7 [distribution] `Electric Range`: n = 299,679, missing 0.01%, min 0, Q1 0, median 0, mean 36.66, Q3 32, max 337, std 76.03, skewness 2.27.
+F8 [distribution] `Electric Range` has 43,197 potential outliers by the 1.5×IQR rule (14.41% of valid values; 43,197 above 80, 0 below -48).
+F9 [data quality] `Electric Range` is exactly 0 in 196,235 rows (65.48% of valid values); zeros could be real or could stand for 'not recorded'.
+F10 [categorical] `Make` has 51 distinct values; most frequent: TESLA = 122,981 (41.03%); CHEVROLET = 20,236 (6.75%); FORD = 16,118 (5.38%); NISSAN = 16,053 (5.36%).
+F11 [categorical] `Electric Utility` has 77 distinct values; most frequent: PUGET SOUND ENERGY INC||CITY OF TACOMA - (WA) = 103,988 (34.7%); PUGET SOUND ENERGY INC = 63,791 (21.29%); CITY OF SEATTLE - (WA)|CITY OF TACOMA - (WA) = 48,888 (16.31%); BONNEVILLE POWER ADMINISTRATION||PUD NO 1 OF CLARK COUNTY - (WA) = 18,318 (6.11%).
+F12 [categorical] `Clean Alternative Fuel Vehicle (CAFV) Eligibility` has 3 distinct values; most frequent: Eligibility unknown as battery range has not been researched = 196,235 (65.48%); Clean Alternative Fuel Vehicle Eligible = 79,293 (26.46%); Not eligible due to low battery range = 24,177 (8.07%).
+F13 [categorical] `Electric Vehicle Type` has 2 distinct values; most frequent: Battery Electric Vehicle (BEV) = 241,724 (80.65%); Plug-in Hybrid Electric Vehicle (PHEV) = 57,981 (19.35%).
+F14 [categorical] `State` has 50 distinct values; most frequent: WA = 298,916 (99.74%); CA = 180 (0.06%); VA = 105 (0.04%); MD = 46 (0.02%).
+F15 [categorical] `VIN (1-10)` has 18,376 distinct values; most frequent: 7SAYGDEE7P = 1228 (0.41%); 7SAYGDEE6P = 1219 (0.41%); 7SAYGDEE9T = 1207 (0.4%); 7SAYGDEE1T = 1186 (0.4%).
+F16 [distribution] `Model Year` ranges from 1999 to 2027 (299,705 non-missing values, 0.0% missing).
+F17 [relationship] Correlation analysis was skipped: correlation analysis needs at least 2 numeric measure columns; found 1.
+F18 [categorical] Median `Electric Range` by `Clean Alternative Fuel Vehicle (CAFV) Eligibility`: Clean Alternative Fuel Vehicle Eligible: median 84 (n = 79,267); Not eligible due to low battery range: median 21 (n = 24,177); Eligibility unknown as battery range has not been researched: median 0 (n = 196,235).
+F19 [limitation] Column meanings, units and valid ranges are not documented in the CSV; the profiler infers structure only, not meaning.
+F20 [limitation] Skipped: correlation analysis needs at least 2 numeric measure columns; found 1
+
+VALID COLUMN NAMES
+VIN (1-10), County, City, State, Postal Code, Model Year, Make, Model, Electric Vehicle Type, Clean Alternative Fuel Vehicle (CAFV) Eligibility, Electric Range, Legislative District, DOL Vehicle ID, Vehicle Location, Electric Utility, 2020 GEOID
