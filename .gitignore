@@ -4,3 +4,4 @@ __pycache__/
 .pytest_cache/
 # ~72 MB; download it with the link in data/README.md
 data/wa_electric_vehicle_population.csv
+*.mp4

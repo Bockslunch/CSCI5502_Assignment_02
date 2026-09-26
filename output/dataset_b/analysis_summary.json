@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-23 16:10:47",
+  "generated_at": "2026-09-25 19:27:41",
   "config": {
     "high_missing_threshold": 0.3,
     "id_unique_ratio": 0.95,
@@ -1412,7 +1412,7 @@
     },
     {
       "category": "distribution",
-      "text": "The `Electric Range` column has a high proportion of zeros (65.48%), which could indicate missing or 'not recorded' data (F9).",
+      "text": "The `Electric Range` column has a high percentage of zeros (65.48%), which could indicate missing or 'not recorded' data (F9).",
       "fact_ids": [
         "F9"
       ],
@@ -1429,7 +1429,7 @@
     },
     {
       "category": "categorical",
-      "text": "The `Make` column is dominated by a few manufacturers, with Tesla being the most frequent (41.03%) (F10).",
+      "text": "The `Make` column is dominated by Tesla, with 41.03% of the data (F10).",
       "fact_ids": [
         "F10"
       ],
@@ -1446,7 +1446,7 @@
     },
     {
       "category": "limitation",
-      "text": "The column meanings and units are not documented, making it difficult to interpret the data (F19).",
+      "text": "The profiler infers column structure but does not document meanings or valid ranges, making interpretation challenging (F19).",
       "fact_ids": [
         "F19"
       ],
@@ -1461,9 +1461,9 @@
     },
     {
       "category": "follow-up question",
-      "text": "It would be useful to investigate why `Electric Range` has so many zeros and what they represent (F9).",
+      "text": "What is the distribution of `Electric Range` values among different `Electric Vehicle Types`? This could provide insights into the types of vehicles with higher ranges (F18).",
       "fact_ids": [
-        "F9"
+        "F18"
       ],
       "auto_fact_ids": [],
       "columns_mentioned": [
@@ -1472,7 +1472,7 @@
       "status": "VERIFIED",
       "problems": [],
       "evidence": [
-        "F9: `Electric Range` is exactly 0 in 196,235 rows (65.48% of valid values); zeros could be real or could stand for 'not recorded'."
+        "F18: Median `Electric Range` by `Clean Alternative Fuel Vehicle (CAFV) Eligibility`: Clean Alternative Fuel Vehicle Eligible: median 84 (n = 79,267); Not eligible due to low battery range: median 21 (n = 24,177); Eligibility unknown as battery range has not been researched: median 0 (n = 196,235)."
       ],
       "source": "llm"
     }
@@ -1494,7 +1494,7 @@
     },
     {
       "category": "distribution",
-      "text": "The `Electric Range` column has a high proportion of zeros (65.48%), which could indicate missing or 'not recorded' data (F9).",
+      "text": "The `Electric Range` column has a high percentage of zeros (65.48%), which could indicate missing or 'not recorded' data (F9).",
       "fact_ids": [
         "F9"
       ],
@@ -1510,7 +1510,7 @@
     },
     {
       "category": "categorical",
-      "text": "The `Make` column is dominated by a few manufacturers, with Tesla being the most frequent (41.03%) (F10).",
+      "text": "The `Make` column is dominated by Tesla, with 41.03% of the data (F10).",
       "fact_ids": [
         "F10"
       ],
@@ -1526,7 +1526,7 @@
     },
     {
       "category": "limitation",
-      "text": "The column meanings and units are not documented, making it difficult to interpret the data (F19).",
+      "text": "The profiler infers column structure but does not document meanings or valid ranges, making interpretation challenging (F19).",
       "fact_ids": [
         "F19"
       ],
@@ -1540,9 +1540,9 @@
     },
     {
       "category": "follow-up question",
-      "text": "It would be useful to investigate why `Electric Range` has so many zeros and what they represent (F9).",
+      "text": "What is the distribution of `Electric Range` values among different `Electric Vehicle Types`? This could provide insights into the types of vehicles with higher ranges (F18).",
       "fact_ids": [
-        "F9"
+        "F18"
       ],
       "auto_fact_ids": [],
       "columns_mentioned": [
@@ -1551,7 +1551,7 @@
       "status": "VERIFIED",
       "problems": [],
       "evidence": [
-        "F9: `Electric Range` is exactly 0 in 196,235 rows (65.48% of valid values); zeros could be real or could stand for 'not recorded'."
+        "F18: Median `Electric Range` by `Clean Alternative Fuel Vehicle (CAFV) Eligibility`: Clean Alternative Fuel Vehicle Eligible: median 84 (n = 79,267); Not eligible due to low battery range: median 21 (n = 24,177); Eligibility unknown as battery range has not been researched: median 0 (n = 196,235)."
       ]
     },
     {
